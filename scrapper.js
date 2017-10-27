@@ -3,8 +3,9 @@ const scrapeIt = require("scrape-it")
 let q = 'slice';
 let topic = 'js';
 
+// Scrap Query
 scrapeIt('https://developer.mozilla.org/en-US/search?q='+q+'&topic='+topic, {
-    result:  {
+    resultList:  {
         listItem: "ul.result-list > li",
         
         data: {
@@ -18,6 +19,16 @@ scrapeIt('https://developer.mozilla.org/en-US/search?q='+q+'&topic='+topic, {
         }
     }
     
-}).then(page => {
-    console.log(page)
+}).then(data => {
+    // console.log(resultList);
+
+    let i = 0;
+
+    // Scrap Syntax
+    scrapeIt(data.resultList[i].link, {
+        name: "div.document-title > h1",
+        syntax: "pre.syntaxbox > code"
+    }).then(result => {
+        console.log(result);
+    })
 })
