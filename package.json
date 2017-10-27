@@ -1,0 +1,12 @@
+{
+  "name": "CodieDoggy",
+  "version": "0.1",
+  "description": "Messenger bot for JS hinter",
+  "main": "index.js",
+  "repository": "https://github.com/Th1nkK1D/CodieDoggy.git",
+  "author": "Withee Poositasai <witheep@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "scrape-it": "^4.0.0"
+  }
+}
