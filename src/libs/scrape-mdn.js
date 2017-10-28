@@ -28,9 +28,41 @@ export async function scrapeContent(type,url) {
             name: "div.document-title > h1",
             syntax: "pre.syntaxbox > code"
         })
-    } else if(type === 'example') {
+    }else if(type === 'example') {
         // Example
+        scrapeIt(data.resultList[i].link, {
+            resultList:  {
+                listItem: "pre"             
+                
+            }
+        }).then(result => {
+            console.log(result.resultList[1]);
+        })
+    }
 
+    return res;
+}
+
+
+export async function scrapeContent(type,url) {
+    let res;
+
+    if(type === 'syntax') {
+        // Scrap Syntax
+        res = await scrapeIt(url, {
+            name: "div.document-title > h1",
+            syntax: "pre.syntaxbox > code"
+        })
+    }else if(type === 'example') {
+        // Example
+        scrapeIt(data.resultList[i].link, {
+            resultList:  {
+                listItem: "pre"             
+                
+            }
+        }).then(result => {
+            console.log(result.resultList[1]);
+        })
     }
 
     return res;

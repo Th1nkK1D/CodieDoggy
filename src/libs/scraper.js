@@ -25,7 +25,7 @@ export async function getContent(lang,type,url) {
 
     if(lang === 'react') {
         // fetch react
-    } if(lang === 'js') {
+    } else if(lang === 'js') {
         // fetch MDN
         res = await mdn.scrapeContent(type,url);
     } else {
