@@ -11,6 +11,7 @@ export function getQuery(lang,q,n) {
             } if(lang === 'js') {
                 // fetch MDN
                 res = await mdn.scrapeQuery(lang,q,n);
+                
 
                 resolve(res);
             } else {
