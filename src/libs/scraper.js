@@ -1,9 +1,9 @@
 import * as mdn from './scrape-mdn';
 
 // Scrape Query
-export async function getQuery(lang,q,n) {
+export function getQuery(lang,q,n) {
     return new Promise(
-        (resolve, reject) => {
+        async (resolve, reject) => {
             let res;
 
             if(lang === 'react') {
@@ -26,9 +26,9 @@ export async function getQuery(lang,q,n) {
 }
 
 // Scrape Content
-export async function getContent(lang,type,url) {
+export function getContent(lang,type,url) {
     return new Promise(
-        (resolve, reject) => {
+      async (resolve, reject) => {
             let res;
 
             if(lang === 'react') {
