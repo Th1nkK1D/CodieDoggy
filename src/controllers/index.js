@@ -1,4 +1,11 @@
 import config from '../../config.json';
+import {
+  analyzeNeed,
+} from '../libs/talkative';
+import {
+  getQuery,
+  getContent,
+} from '../libs/scraper';
 import request from 'request';
 
 /* ===========================
@@ -14,11 +21,60 @@ function handleMessage(sender_psid, received_message) {
 
   // Check if the message contains text
   if (received_message.text) {
-
     // Create the payload for a basic text message
-    response = {
-      "text": `You sent the message: "${received_message.text}". Now send me an image!`
-    }
+    const needs = analyzeNeed(received_message.text);
+
+
+    let res;
+    getQuery(needs.msg.language, needs.msg.query, 3)
+      .then((result) => {
+        let text = '';
+        result.forEach((r) => {
+          text += `>Title: ${r.name}\n>URL: ${r.url}\n\n`
+        })
+        if (needs.msg.mode === 'example') {
+          getContent(needs.msg.language, needs.msg.mode, result[0].url)
+          .then((result2) => {
+
+            if (result2) {
+              response = {
+                "text": result2,
+              }
+              callSendAPI(sender_psid, response);
+            }
+          })
+          .catch((err) => {
+            response = {
+              "text": JSON.stringify(err),
+            }
+            // Sends the response message
+            callSendAPI(sender_psid, response);
+          })
+        } else {
+          getContent(needs.msg.language, needs.msg.mode, result[0].url)
+          .then((result2) => {
+            response = {
+              "text": '```javascript\n' + result2.syntax + '\n```',
+            }
+            callSendAPI(sender_psid, response);
+          })
+          .catch((err) => {
+            response = {
+              "text": JSON.stringify(err),
+            }
+            // Sends the response message
+            callSendAPI(sender_psid, response);
+          })
+        }
+        // Sends the response message
+      })
+      .catch((err) => {
+        response = {
+          "text": JSON.stringify(err),
+        }
+        // Sends the response message
+        callSendAPI(sender_psid, response);
+      })
   }
 
   // Sends the response message
@@ -31,8 +87,7 @@ function handlePostback(sender_psid, received_postback) {
 }
 
 // Sends response messages via the Send API
-function callSendAPI(sender_psid, response, api = 'message') {
-  const apiUrl = `https://graph.facebook.com/v2.6/me/${api}`
+function callSendAPI(sender_psid, response) {
   // Construct the message body
   let request_body = {
     "recipient": {
@@ -41,9 +96,11 @@ function callSendAPI(sender_psid, response, api = 'message') {
     "message": response
   }
 
+  // console.log(request_body)
+
   // Send the HTTP request to the Messenger Platform
   request({
-    "uri": apiUrl,
+    "uri": "https://graph.facebook.com/v2.6/me/messages",
     "qs": { "access_token": config.PAGE_ACCESS_TOKEN },
     "method": "POST",
     "json": request_body

@@ -4,7 +4,7 @@ export async function scrapeQuery(lang,q,n) {
     const res = await scrapeIt('https://developer.mozilla.org/en-US/search?q='+q+'&topic='+lang, {
         list:  {
             listItem: "ul.result-list > li",
-            
+
             data: {
                 name: {
                     selector: "div.result-list-item > h4 > a"
@@ -30,10 +30,10 @@ export async function scrapeContent(type,url) {
         })
     }else if(type === 'example') {
         // Example
-        scrapeIt(data.resultList[i].link, {
+        scrapeIt(url, {
             resultList:  {
-                listItem: "pre"             
-                
+                listItem: "pre"
+
             }
         }).then(result => {
             console.log(result.resultList[1]);
