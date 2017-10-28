@@ -2,6 +2,7 @@ const scrapeIt = require("scrape-it")
 
 let q = 'slice';
 let topic = 'js';
+let type = 'syntax';
 
 // Scrap Query
 scrapeIt('https://developer.mozilla.org/en-US/search?q='+q+'&topic='+topic, {
@@ -24,11 +25,16 @@ scrapeIt('https://developer.mozilla.org/en-US/search?q='+q+'&topic='+topic, {
 
     let i = 0;
 
-    // Scrap Syntax
-    scrapeIt(data.resultList[i].link, {
-        name: "div.document-title > h1",
-        syntax: "pre.syntaxbox > code"
-    }).then(result => {
-        console.log(result);
-    })
+    if(type === 'syntax') {
+        // Scrap Syntax
+        scrapeIt(data.resultList[i].link, {
+            name: "div.document-title > h1",
+            syntax: "pre.syntaxbox > code"
+        }).then(result => {
+            console.log(result);
+        })
+    } else if(type === 'example') {
+        // Example
+
+    }
 })
