@@ -36,9 +36,10 @@ export async function scrapeContent(type,url) {
 
             }
         })
+        res = res.resultList[1] ;
     }
 
-    return res.resultList[1];
+    return res;
 }
 
 

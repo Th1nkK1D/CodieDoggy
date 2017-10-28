@@ -6,9 +6,8 @@ export function getQuery(lang,q,n) {
         async (resolve, reject) => {
             let res;
 
-            if(lang === 'react') {
-                res = await react.scrapeQuery(lang,q,n);
-            } if(lang === 'js') {
+        
+            if(lang === 'js') {
                 // fetch MDN
                 res = await mdn.scrapeQuery(lang,q,n);
                 
