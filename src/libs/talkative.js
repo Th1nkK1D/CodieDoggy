@@ -35,7 +35,7 @@ export function analyzeNeed(msg) {
       throw [
         `Sorry, "${language}" is not avaiable right now.`,
         'Here, there are avaiable languages.',
-        ...LANGUAGES,
+        ...config.LANGUAGES,
       ]
     }
 
