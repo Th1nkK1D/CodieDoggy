@@ -1,9 +1,9 @@
-import * as scrapper from './libs/scrapper'; 
+import * as scraper from './libs/scraper'; 
 
 (async () => {
-    const list = await scrapper.getQuery('js','slice',3);
+    const list = await scraper.getQuery('js','slice',3);
     console.log(list);
 
-    const content = await scrapper.getContent('js','syntax',list[0].url);   
+    const content = await scraper.getContent('js','syntax',list[0].url);   
     console.log(content);
 })();
