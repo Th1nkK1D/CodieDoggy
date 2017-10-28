@@ -38,7 +38,7 @@ function handleMessage(sender_psid, received_message) {
 
             if (result2) {
               response = {
-                "text": result2,
+                "text": '```javascript\n' + result2 + '\n```',
               }
               callSendAPI(sender_psid, response);
             }
