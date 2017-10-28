@@ -2,38 +2,50 @@ import * as mdn from './scrape-mdn';
 
 // Scrape Query
 export async function getQuery(lang,q,n) {
-    let res;
+    return new Promise(
+        (resolve, reject) => {
+            let res;
 
-    if(lang === 'react') {
-        // fetch react
-    } if(lang === 'js') {
-        // fetch MDN
-        res = await mdn.scrapeQuery(lang,q,n);
-    } else {
-        res = {
-            'error': true,
-            'message': lang+' is not supported',
-        }
-    }
+            if(lang === 'react') {
+                // fetch react
+            } if(lang === 'js') {
+                // fetch MDN
+                res = await mdn.scrapeQuery(lang,q,n);
 
-    return res;
+                resolve(res);
+            } else {
+                res = {
+                    'error': true,
+                    'message': lang+' is not supported',
+                }
+
+                reject(res);
+            }
+        },
+    );
 }
 
 // Scrape Content
-export async function getContent(lang,type,url) {  
-    let res;
+export async function getContent(lang,type,url) {
+    return new Promise(
+        (resolve, reject) => {
+            let res;
 
-    if(lang === 'react') {
-        // fetch react
-    } else if(lang === 'js') {
-        // fetch MDN
-        res = await mdn.scrapeContent(type,url);
-    } else {
-        res = {
-            'error': true,
-            'message': lang+' is not supported',
-        }
-    }
+            if(lang === 'react') {
+                // fetch react
+            } else if(lang === 'js') {
+                // fetch MDN
+                res = await mdn.scrapeContent(type,url);
 
-    return res;
+                resolve(res);
+            } else {
+                res = {
+                    'error': true,
+                    'message': lang+' is not supported',
+                }
+            }
+
+            reject(res);
+        },
+    );
 }
