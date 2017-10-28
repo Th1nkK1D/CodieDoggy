@@ -1,44 +1,4 @@
-const scrapeIt = require("scrape-it")
-
-let q = 'slice';
-let topic = 'js';
-let type = 'syntax';
-
-async function scrapeMdnQuery(lang,q,n) {
-    const res = await scrapeIt('https://developer.mozilla.org/en-US/search?q='+q+'&topic='+lang, {
-        list:  {
-            listItem: "ul.result-list > li",
-            
-            data: {
-                name: {
-                    selector: "div.result-list-item > h4 > a"
-                },
-                url: {
-                    selector: "div.result-list-item > h4 > a",
-                    attr: "href"
-                }
-            }
-        }
-    })
-    return res.list.slice(0,n);
-}
-
-async function scrapeMdnContent(type,url) {
-    let res;
-
-    if(type === 'syntax') {
-        // Scrap Syntax
-        res = await scrapeIt(url, {
-            name: "div.document-title > h1",
-            syntax: "pre.syntaxbox > code"
-        })
-    } else if(type === 'example') {
-        // Example
-
-    }
-
-    return res;
-}
+import * as mdn from './scrape-mdn';
 
 // Scrape Query
 export async function getQuery(lang,q,n) {
@@ -48,7 +8,7 @@ export async function getQuery(lang,q,n) {
         // fetch react
     } if(lang === 'js') {
         // fetch MDN
-        res = await scrapeMdnQuery(lang,q,n);
+        res = await mdn.scrapeQuery(lang,q,n);
     } else {
         res = {
             'error': true,
@@ -67,7 +27,7 @@ export async function getContent(lang,type,url) {
         // fetch react
     } if(lang === 'js') {
         // fetch MDN
-        res = await scrapeMdnContent(type,url);
+        res = await mdn.scrapeContent(type,url);
     } else {
         res = {
             'error': true,
