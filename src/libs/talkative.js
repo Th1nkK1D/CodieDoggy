@@ -28,16 +28,14 @@ export function analyzeNeed(msg) {
 
     let language = args[0];
     language = language.toLowerCase();
-    language = `${language.charAt(0).toUpperCase()}${language.slice(1)}`;
     const mode = args[1];
     const query = args.slice(2).join(' ');
 
-    if (config.LANGUAGES.indexOf(language.toLowerCase()) < 0) {
-      const normalizeLaunages = config.LANGUAGES.map(l => `${l.charAt(0).toUpperCase()}${l.slice(1)}`);
+    if (config.LANGUAGES.indexOf(language) < 0) {
       throw [
-        `Sorry, ${language} is not avaiable right now.`,
+        `Sorry, "${language}" is not avaiable right now.`,
         'Here, there are avaiable languages.',
-        ...normalizeLaunages,
+        ...LANGUAGES,
       ]
     }
 
