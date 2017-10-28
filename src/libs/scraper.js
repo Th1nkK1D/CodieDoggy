@@ -1,4 +1,5 @@
 import * as mdn from './scrape-mdn';
+//import * as react from './scarpe-react'
 
 // Scrape Query
 export async function getQuery(lang,q,n) {
@@ -6,6 +7,7 @@ export async function getQuery(lang,q,n) {
 
     if(lang === 'react') {
         // fetch react
+        res = await react.scrapeQuery(lang,q,n);
     } if(lang === 'js') {
         // fetch MDN
         res = await mdn.scrapeQuery(lang,q,n);
@@ -25,6 +27,7 @@ export async function getContent(lang,type,url) {
 
     if(lang === 'react') {
         // fetch react
+        res = await react.scrapeContent(type,url);
     } else if(lang === 'js') {
         // fetch MDN
         res = await mdn.scrapeContent(type,url);
