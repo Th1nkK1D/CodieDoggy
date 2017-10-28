@@ -21,60 +21,84 @@ function handleMessage(sender_psid, received_message) {
 
   // Check if the message contains text
   if (received_message.text) {
-    // Create the payload for a basic text message
     const needs = analyzeNeed(received_message.text);
+    // Create the payload for a basic text message
+    if (received_message.text === 'help') {
+      callSendAPI(sender_psid, {
+        text: `<language> <command> <query>\n\ncommand : 'example', 'syntax'\n\nexample\n\n> js example splice // to show example of splice`
+      });
+    } else if (needs.msg.language === 'react') {
+      const code = `
+      import PropTypes from 'prop-types';
 
+      class Greeting extends React.Component {
+        render() {
+          return (
+            <h1>Hello, {this.props.name}</h1>
+          );
+        }
+      }
 
-    let res;
-    getQuery(needs.msg.language, needs.msg.query, 3)
-      .then((result) => {
-        let text = '';
-        result.forEach((r) => {
-          text += `>Title: ${r.name}\n>URL: ${r.url}\n\n`
-        })
-        if (needs.msg.mode === 'example') {
-          getContent(needs.msg.language, needs.msg.mode, result[0].url)
-          .then((result2) => {
+      Greeting.propTypes = {
+        name: PropTypes.string
+      };
+      `
+      callSendAPI(sender_psid, {
+        text: '```javascript\n' + code + '\n```'
+      });
+    }else {
+      const needs = analyzeNeed(received_message.text);
+          let res;
+          getQuery(needs.msg.language, needs.msg.query, 3)
+            .then((result) => {
+              let text = '';
+              result.forEach((r) => {
+                text += `>Title: ${r.name}\n>URL: ${r.url}\n\n`
+              })
+              if (needs.msg.mode === 'example') {
+                getContent(needs.msg.language, needs.msg.mode, result[0].url)
+                .then((result2) => {
 
-            if (result2) {
-              response = {
-                "text": '```javascript\n' + result2 + '\n```',
+                  if (result2) {
+                    response = {
+                      "text": '```javascript\n' + result2 + '\n```',
+                    }
+                    callSendAPI(sender_psid, response);
+                  }
+                })
+                .catch((err) => {
+                  response = {
+                    "text": JSON.stringify(err),
+                  }
+                  // Sends the response message
+                  callSendAPI(sender_psid, response);
+                })
+              } else {
+                getContent(needs.msg.language, needs.msg.mode, result[0].url)
+                .then((result2) => {
+                  response = {
+                    "text": '```javascript\n' + result2.syntax + '\n```',
+                  }
+                  callSendAPI(sender_psid, response);
+                })
+                .catch((err) => {
+                  response = {
+                    "text": JSON.stringify(err),
+                  }
+                  // Sends the response message
+                  callSendAPI(sender_psid, response);
+                })
               }
+              // Sends the response message
+            })
+            .catch((err) => {
+              response = {
+                "text": JSON.stringify(err),
+              }
+              // Sends the response message
               callSendAPI(sender_psid, response);
-            }
-          })
-          .catch((err) => {
-            response = {
-              "text": JSON.stringify(err),
-            }
-            // Sends the response message
-            callSendAPI(sender_psid, response);
-          })
-        } else {
-          getContent(needs.msg.language, needs.msg.mode, result[0].url)
-          .then((result2) => {
-            response = {
-              "text": '```javascript\n' + result2.syntax + '\n```',
-            }
-            callSendAPI(sender_psid, response);
-          })
-          .catch((err) => {
-            response = {
-              "text": JSON.stringify(err),
-            }
-            // Sends the response message
-            callSendAPI(sender_psid, response);
-          })
-        }
-        // Sends the response message
-      })
-      .catch((err) => {
-        response = {
-          "text": JSON.stringify(err),
-        }
-        // Sends the response message
-        callSendAPI(sender_psid, response);
-      })
+            })
+    }
   }
 
   // Sends the response message
