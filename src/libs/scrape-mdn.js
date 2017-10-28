@@ -30,17 +30,15 @@ export async function scrapeContent(type,url) {
         })
     }else if(type === 'example') {
         // Example
-        scrapeIt(url, {
+        res = await scrapeIt(url, {
             resultList:  {
                 listItem: "pre"
 
             }
-        }).then(result => {
-            console.log(result.resultList[1]);
         })
     }
 
-    return res;
+    return res.resultList[1];
 }
 
 
