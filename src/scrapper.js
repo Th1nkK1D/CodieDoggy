@@ -6,7 +6,7 @@ let type = 'syntax';
 
 // Scrape Query
 export async function getQuery(q,topic) {
-    return await scrapeIt('https://developer.mozilla.org/en-US/search?q='+q+'&topic='+topic, {
+    const res = await scrapeIt('https://developer.mozilla.org/en-US/search?q='+q+'&topic='+topic, {
         resultList:  {
             listItem: "ul.result-list > li",
             
@@ -22,6 +22,7 @@ export async function getQuery(q,topic) {
         }
         
     })
+    return res;
 }
 
 // Scrape Content
