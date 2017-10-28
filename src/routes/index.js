@@ -18,7 +18,7 @@ router.get('/hello', (req, res) => {
 })
 
 // Adds support for GET requests to our webhook
-router.get('/webhook', verifyWebhook;
+router.get('/webhook', verifyWebhook);
 
 router.post('/webhook', postWebhook);
 
