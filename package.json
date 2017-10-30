@@ -2,13 +2,14 @@
   "name": "CodieDoggy",
   "version": "0.1",
   "description": "Messenger bot for JS hinter",
-  "main": "index.js",
+  "main": "dist/index.js",
   "repository": "https://github.com/Th1nkK1D/CodieDoggy.git",
   "author": "Withee Poositasai <witheep@gmail.com>",
   "license": "MIT",
   "scripts": {
     "watch": "node ./scripts/watch",
-    "start": "nodemon ./dist"
+    "start": "node ./dist",
+    "dev": "nodemon ./dist"
   },
   "dependencies": {
     "babel-core": "^6.26.0",
